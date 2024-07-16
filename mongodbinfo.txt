@@ -1,0 +1,14 @@
+Cluster Details
+
+Cluster Name: Cluster0
+Username:todoListApp
+Password:lohfOK9NdfZuMV2U
+
+
+Connect to Cluster0
+Add your connection string into your application code:
+
+
+112.134.247.186/32
+
+mongodb+srv://todoListApp:lohfOK9NdfZuMV2U@cluster0.ckp4zhq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
