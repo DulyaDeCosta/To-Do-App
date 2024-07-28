@@ -14,79 +14,68 @@ mongoose.connect(process.env.DB_CONNECT)
     .then(() => {
         console.log("Connected to db!");
         app.listen(3000, () => console.log("Server Up and running"));
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-  });
+    })
+    .catch((err) => {
+        console.error("MongoDB connection error:", err);
+    });
 
 app.set("view engine", "ejs");
 
-// app.get('/', (req, res) => {
-//   res.render('todo.ejs');
-// });
-
-//replaced above with below code
-
+// Handle GET requests to the home page
 app.get('/', async (req, res) => {
-  try {
-      const tasksresults = await TodoTask.find({},);
-      res.render("todo.ejs", { todoTasks: tasksresults });
-  } catch (err) {
-      res.send(500, err);
-      res.redirect("/");
-  }
-});
-
-// app.post('/', (req, res) => {
-//   console.log(req.body);
-// });
-
-//replaced above with below code 
-app.post('/', async (req, res) => {
-  const todoTask = new TodoTask({
-  content: req.body.content
-  });
-  try {
-    await todoTask.save();
-      res.redirect("/");
+    try {
+        const tasksresults = await TodoTask.find({});
+        res.render("todo.ejs", { todoTasks: tasksresults });
     } catch (err) {
-      res.send(500, err);
-      res.redirect("/");
+        res.status(500).send(err.message); // Proper status setting
     }
 });
 
-app.route("/remove/:id").get(async (req, res) => {
-  try {
-    const id = req.params.id;
-    await TodoTask.findByIdAndDelete(id);
-  res.redirect("/");
-  } catch (err) {
-    res.status(500).send(err);
-  }
+// Handle POST requests to add a new task
+app.post('/', async (req, res) => {
+    const todoTask = new TodoTask({
+        content: req.body.content
+    });
+    try {
+        await todoTask.save();
+        res.redirect("/");
+    } catch (err) {
+        res.status(500).send(err.message); // Proper status setting
+    }
 });
 
-app
-    .route("/edit/:id")
+// Handle GET requests to remove a task
+app.route("/remove/:id").get(async (req, res) => {
+    try {
+        const id = req.params.id;
+        await TodoTask.findByIdAndDelete(id);
+        res.redirect("/");
+    } catch (err) {
+        res.status(500).send(err.message); // Proper status setting
+    }
+});
+
+// Handle GET and POST requests for editing a task
+app.route("/edit/:id")
     .get(async (req, res) => {
         const id = req.params.id;
         try {
-            const taskedits = await TodoTask.find({},);
+            const taskedits = await TodoTask.find({});
             res.render("todoEdit.ejs", { todoTasks: taskedits, idTask: id });
         } catch (err) {
-            res.send(500, err);
-            res.redirect("/");
+            res.status(500).send(err.message); // Proper status setting
         }
     })
     .post(async (req, res) => {
-      const id = req.params.id;
-      try {
-          await TodoTask.findByIdAndUpdate(id, { content: req.body.content });
-          res.redirect("/");
-      } catch (err) {
-          res.send(500, err);
-          res.redirect("/");
-      }
-});
+        const id = req.params.id;
+        try {
+            await TodoTask.findByIdAndUpdate(id, { content: req.body.content });
+            res.redirect("/");
+        } catch (err) {
+            res.status(500).send(err.message); // Proper status setting
+        }
+    });
+
 
 // app.listen(3000,()=> console.log("Server up and running"));
 
