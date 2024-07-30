@@ -52,4 +52,4 @@ In your terminal, enter the following command to start your web server:
 
 Check out below video demo of the app to see it in action!
 
-https://github.com/user-attachments/assets/6a3de055-df91-49fd-b2e8-fba86165ba8f
+https://github.com/user-attachments/assets/9f3e6b23-8946-44f1-8df8-e7c2405900ce
